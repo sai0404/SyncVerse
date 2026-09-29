@@ -23,7 +23,7 @@ I'm presently made only for final cut pro where you can download your time-synce
                   .      .
                   .      .
             [00:07:00] end
-	
+
 	
 **step 3:** Download the file or copy and save the content using .fcpxml extension to the file.
 
@@ -31,4 +31,10 @@ I'm presently made only for final cut pro where you can download your time-synce
 
 **step 5:** *== Success ==* 
 
+Latest version is integrated with WisperX through API, for better experience make **offset=-1500ms** output will be in word - word in .lrc version.
+
+
+
+**If You wanna share anything, Please message me here
+**
 
