@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SyncVerse — 9:16 Fixed Lyrics</title>
+<style>
+:root{
+  --bg:#000000;
+  --normal:#666666;
+  --active:#00ffff;
+  --active-bg:transparent;
+  --title:#777777;
+  --font:28px;
+  --gap:8px;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  min-height:100%;
+  background:#111;
+  font-family:Arial,Helvetica,sans-serif;
+}
+body{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  padding:18px;
+}
+.app{display:flex;gap:20px;align-items:center}
+.phone{
+  width:min(430px,calc(100vw - 36px));
+  aspect-ratio:9/16;
+  max-height:calc(100vh - 36px);
+  background:var(--bg);
+  border:1px solid #333;
+  border-radius:30px;
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 25px 70px rgba(0,0,0,.55);
+}
+.top{
+  flex:0 0 auto;
+  text-align:center;
+  padding:18px 18px 8px;
+}
+.music{font-size:25px;color:#777}
+.title{color:var(--title);font-size:19px;font-weight:700;margin-top:3px}
+.lyrics{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  overflow:hidden;
+  padding:15px 18px;
+}
+.line{
+  flex:0 0 auto;
+  color:var(--normal);
+  font-size:var(--font);
+  line-height:1.15;
+  text-align:center;
+  font-weight:600;
+  padding:4px 5px;
+  margin:var(--gap) 0;
+  border-radius:10px;
+  transition:color .2s ease,background .2s ease;
+  /* Same font-size for EVERY line */
+}
+.line.active{
+  color:var(--active);
+  background:var(--active-bg);
+  /* Active line does NOT become bigger */
+}
+.bottom{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  padding:10px 16px 14px;
+  text-align:center;
+  background:linear-gradient(transparent,var(--bg) 35%);
+}
+.play{
+  width:48px;height:48px;border:0;border-radius:50%;
+  background:var(--active);color:#000;
+  font-size:18px;cursor:pointer;margin-bottom:7px;
+}
+.progress{height:3px;background:#333;border-radius:4px;overflow:hidden}
+.progress i{display:block;width:0;height:100%;background:var(--active)}
+.time{font-size:10px;color:#777;margin-top:5px}
+.panel{
+  width:320px;background:#191919;color:#eee;
+  border:1px solid #303030;border-radius:18px;padding:20px;
+}
+.panel h2{margin:0 0 5px}
+.panel p{color:#999;font-size:13px;line-height:1.45}
+.panel section{border-top:1px solid #333;padding-top:14px;margin-top:14px}
+label{display:block;color:#bbb;font-size:12px;margin:9px 0 5px}
+input[type=file]{width:100%;color:#bbb}
+input[type=color]{width:100%;height:35px;padding:2px;background:#111;border:1px solid #444;border-radius:7px}
+input[type=range]{width:100%}
+button.secondary{width:100%;padding:10px;border:0;border-radius:8px;background:#333;color:#fff;cursor:pointer}
+.value{float:right;color:var(--active)}
+.hint{background:#101010;border:1px solid #303030;border-radius:9px;padding:10px;color:#999;font-size:12px;line-height:1.4}
+@media(max-width:850px){
+  body{padding:0;align-items:flex-start;background:#000}
+  .app{display:block}
+  .phone{
+    width:min(100vw,430px);
+    height:100vh;
+    max-height:none;
+    border:0;border-radius:0;box-shadow:none;
+  }
+  .panel{
+    width:min(430px,100vw);
+    border-radius:0;border-left:0;border-right:0;
+  }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+
+<main class="phone">
+  <div class="top">
+    <div class="music">♫</div>
+    <div class="title" id="title">LRC Lyrics</div>
+  </div>
+
+
+  <div class="lyrics" id="lyrics"></div>
+
+
+  <div class="bottom">
+    <button class="play" id="play">▶</button>
+    <div class="progress" id="progressBar"><i id="progress"></i></div>
+    <div class="time" id="time">00:00 / 00:00</div>
+  </div>
+</main>
+
+
+<aside class="panel">
+  <h2>SyncVerse</h2>
+  <p>
+    Fixed 9:16 lyrics. All lines remain in the same positions and
+    <b>all lines have exactly the same font size</b>.
+    Only the active line color changes.
+  </p>
+
+
+  <section>
+    <label>Upload LRC file</label>
+    <input type="file" id="lrc" accept=".lrc,text/plain">
+    <br><br>
+    <button class="secondary" id="reset">Reset</button>
+  </section>
+
+
+  <section>
+    <label>Background</label>
+    <input type="color" id="bg" value="#000000">
+
+
+    <label>Normal line color</label>
+    <input type="color" id="normal" value="#666666">
+
+
+    <label>Active line color</label>
+    <input type="color" id="active" value="#00ffff">
+
+
+    <label>Active line background</label>
+    <input type="color" id="activeBg" value="#000000">
+    <label>
+      <input type="checkbox" id="transparent" checked>
+      Transparent active background
+    </label>
+  </section>
+
+
+  <section>
+    <label>All lyrics font size <span class="value" id="fontV">28px</span></label>
+    <input type="range" id="font" min="14" max="42" value="28">
+
+
+    <label>Line spacing <span class="value" id="gapV">8px</span></label>
+    <input type="range" id="gap" min="0" max="18" value="8">
+  </section>
+
+
+  <section>
+    <div class="hint">
+      <b>Same size + no scrolling.</b><br>
+      Active lyrics only change color. Their font size never increases.
+    </div>
+  </section>
+</aside>
+
+
+</div>
+
+
+<script>
+const lrcInput=document.getElementById("lrc");
+const lyricsBox=document.getElementById("lyrics");
+const title=document.getElementById("title");
+const playBtn=document.getElementById("play");
+const progress=document.getElementById("progress");
+const progressBar=document.getElementById("progressBar");
+const timeText=document.getElementById("time");
+
+
+let lyrics=[];
+let playing=false;
+let elapsed=0;
+let startedAt=0;
+let raf=null;
+
+
+function parseLRC(text){
+  const result=[];
+  for(const raw of text.replace(/\r/g,"").split("\n")){
+    const tags=[...raw.matchAll(/\[(\d+):(\d+(?:\.\d+)?)\]/g)];
+    if(!tags.length) continue;
+    const lyric=raw.replace(/\[(\d+):(\d+(?:\.\d+)?)\]/g,"").trim();
+    if(!lyric) continue;
+    for(const tag of tags){
+      result.push({
+        time:Number(tag[1])*60+Number(tag[2]),
+        text:lyric
+      });
+    }
+  }
+  return result.sort((a,b)=>a.time-b.time);
+}
+
+
+function render(){
+  lyricsBox.innerHTML="";
+  if(!lyrics.length){
+    lyricsBox.innerHTML='<div class="line active">Upload an .lrc file</div>';
+    return;
+  }
+
+
+  lyrics.forEach((item,i)=>{
+    const line=document.createElement("div");
+    line.className="line";
+    line.dataset.index=i;
+    line.textContent=item.text;
+    lyricsBox.appendChild(line);
+  });
+}
+
+
+function currentIndex(t){
+  let index=-1;
+  for(let i=0;i<lyrics.length;i++){
+    if(t>=lyrics[i].time) index=i;
+    else break;
+  }
+  return index;
+}
+
+
+function format(t){
+  const m=Math.floor(Math.max(0,t)/60);
+  const s=Math.floor(Math.max(0,t)%60);
+  return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+
+
+function update(t){
+  if(!lyrics.length)return;
+
+
+  const index=currentIndex(t);
+  document.querySelectorAll(".line").forEach((line,i)=>{
+    line.classList.toggle("active",i===index);
+  });
+
+
+  const duration=lyrics[lyrics.length-1].time+4;
+  progress.style.width=Math.min(100,t/duration*100)+"%";
+  timeText.textContent=format(t)+" / "+format(duration);
+
+
+  if(t>=duration){
+    playing=false;
+    playBtn.textContent="▶";
+    return;
+  }
+
+
+  if(playing){
+    raf=requestAnimationFrame(()=>{
+      elapsed=(performance.now()-startedAt)/1000;
+      update(elapsed);
+    });
+  }
+}
+
+
+progressBar.onclick=(e)=>{
+  if(!lyrics.length)return;
+  const duration=lyrics[lyrics.length-1].time+4;
+  const rect=progressBar.getBoundingClientRect();
+  const ratio=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
+  elapsed=ratio*duration;
+  if(playing) startedAt=performance.now()-elapsed*1000;
+  update(elapsed);
+};
+
+playBtn.onclick=()=>{
+  if(!lyrics.length)return;
+
+
+  if(playing){
+    playing=false;
+    elapsed=(performance.now()-startedAt)/1000;
+    playBtn.textContent="▶";
+    cancelAnimationFrame(raf);
+  }else{
+    playing=true;
+    startedAt=performance.now()-elapsed*1000;
+    playBtn.textContent="Ⅱ";
+    update(elapsed);
+  }
+};
+
+
+lrcInput.onchange=()=>{
+  const file=lrcInput.files[0];
+  if(!file)return;
+
+
+  const reader=new FileReader();
+  reader.onload=()=>{
+    lyrics=parseLRC(reader.result);
+    elapsed=0;
+    playing=false;
+    playBtn.textContent="▶";
+    title.textContent=file.name.replace(/\.lrc$/i,"");
+    render();
+    update(0);
+  };
+  reader.readAsText(file);
+};
+
+
+document.getElementById("bg").oninput=e=>
+  document.documentElement.style.setProperty("--bg",e.target.value);
+
+
+document.getElementById("normal").oninput=e=>
+  document.documentElement.style.setProperty("--normal",e.target.value);
+
+
+document.getElementById("active").oninput=e=>
+  document.documentElement.style.setProperty("--active",e.target.value);
+
+
+document.getElementById("activeBg").oninput=e=>{
+  if(!document.getElementById("transparent").checked)
+    document.documentElement.style.setProperty("--active-bg",e.target.value);
+};
+
+
+document.getElementById("transparent").onchange=e=>
+  document.documentElement.style.setProperty(
+    "--active-bg",
+    e.target.checked ? "transparent" : document.getElementById("activeBg").value
+  );
+
+
+document.getElementById("font").oninput=e=>{
+  document.documentElement.style.setProperty("--font",e.target.value+"px");
+  document.getElementById("fontV").textContent=e.target.value+"px";
+};
+
+
+document.getElementById("gap").oninput=e=>{
+  document.documentElement.style.setProperty("--gap",e.target.value+"px");
+  document.getElementById("gapV").textContent=e.target.value+"px";
+};
+
+
+document.getElementById("reset").onclick=()=>location.reload();
+</script>
+</body>
+</html>
