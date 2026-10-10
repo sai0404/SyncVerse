@@ -37,5 +37,6 @@ Latest version is integrated with WisperX through API, for better experience mak
 
 **If You wanna share anything, Please message me here
 **
-I'm preparing documentation 
+
+I'm preparing documentation.
 
