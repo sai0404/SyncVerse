@@ -33,11 +33,14 @@ I'm presently made only for final cut pro where you can download your time-synce
 **step 5:** *== Success ==* 
 
 Latest version is integrated with WisperX through API, for better experience make **offset=-1500ms** output will be in word - word in .lrc version.
-<img width="446" height="220" alt="444E4964-864D-42CD-99D7-036B2D7FAB07_4_5005_c" src="https://github.com/user-attachments/assets/a7321674-e70a-499f-8c08-6be577ec6613" />
+
 
 
 
 **If You wanna share anything, Please message me here**
 
 I'm preparing documentation.
+
+<img width="446" height="220" alt="444E4964-864D-42CD-99D7-036B2D7FAB07_4_5005_c" src="https://github.com/user-attachments/assets/a7321674-e70a-499f-8c08-6be577ec6613" />
+<img width="1566" height="814" alt="image" src="https://github.com/user-attachments/assets/d695ea5d-9b8c-4817-8626-5ba84ac592a8" />
 
