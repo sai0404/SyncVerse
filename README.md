@@ -1,3 +1,4 @@
+
 # SyncVerse
 **previously called as LRC_to_FCPXML**
 
@@ -32,6 +33,7 @@ I'm presently made only for final cut pro where you can download your time-synce
 **step 5:** *== Success ==* 
 
 Latest version is integrated with WisperX through API, for better experience make **offset=-1500ms** output will be in word - word in .lrc version.
+<img width="446" height="220" alt="444E4964-864D-42CD-99D7-036B2D7FAB07_4_5005_c" src="https://github.com/user-attachments/assets/a7321674-e70a-499f-8c08-6be577ec6613" />
 
 
 
